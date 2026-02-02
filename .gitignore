@@ -1,0 +1,14 @@
+.vscode/
+
+# ROS / Colcon
+build/
+install/
+log/
+
+# Python
+env/
+ENV/
+env.bak/
+venv/
+.env
+.venv/
