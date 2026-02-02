@@ -3,13 +3,15 @@
 <package format="3">
   <name>sterilink_trajectory_planning</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="karan@todo.todo">karan</maintainer>
-  <license>MIT</license>
+  <description>Trajectory Planning Node for STERILINK Autonomous Mobile Robot</description>
+  <maintainer email="has8385s@hs-coburg.de">Hassan Abdelhadi</maintainer>
+  <license>Apache License 2.0</license>
 
   <depend>rclpy</depend>
-  <depend>std_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>derived_object_msgs</depend>
+  <depend>ackermann_msgs</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
