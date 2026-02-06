@@ -20,9 +20,9 @@ class TrajectoryPlanning(Node):
     Trajectory Planning Node.
 
     Subscribes to:
-      - /location: Current robot pose and velocity (nav_msgs/Odometry)
-      - /localized_objects: Detected dynamic obstacles (derived_object_msgs/ObjectArray)
-      - /path: Global path to follow (nav_msgs/Path)
+      - odometry: Current robot pose and velocity (nav_msgs/Odometry)
+      - localized_objects: Detected dynamic obstacles (derived_object_msgs/ObjectArray)
+      - path: Global path to follow (nav_msgs/Path)
 
     Publishes to:
       - /motion_command: Drive commands (ackermann_msgs/AckermannDriveStamped)
@@ -54,21 +54,21 @@ class TrajectoryPlanning(Node):
         # Subscribers
         self.sub_location = self.create_subscription(
             Odometry,
-            "/location",
+            "odometry",
             self.callback_location,
             qos_profile
         )
 
         self.sub_objects = self.create_subscription(
             ObjectArray,
-            "/localized_objects",
+            "localized_objects",
             self.callback_objects,
             qos_profile
         )
 
         self.sub_path = self.create_subscription(
             Path,
-            "/path",
+            "path",
             self.callback_path,
             qos_profile
         )
@@ -76,19 +76,19 @@ class TrajectoryPlanning(Node):
         # Publishers
         self.pub_motion_command = self.create_publisher(
             AckermannDriveStamped,
-            "/motion_command",
+            "motion_command",
             10
         )
 
         self.pub_live_location = self.create_publisher(
             Odometry,
-            "/live_location",
+            "live_location",
             10
         )
 
         self.pub_trajectory_status = self.create_publisher(
             TrajectoryStatus,
-            "/trajectory_status",
+            "trajectory_status",
             10
         )
 

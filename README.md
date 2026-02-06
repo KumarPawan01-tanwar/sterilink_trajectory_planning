@@ -23,7 +23,7 @@ To achieve that, the **Dynamic Window Approach (DWA)** algorithm is to be evalua
 
 | Input | Type | Description |
 |---|---|---|
-| /location | nav_msgs/Odometry | Current estimated pose and velocity of the robot. |
+| /odometry | nav_msgs/Odometry | Current estimated pose and velocity of the robot. |
 | /localized_objects | derived_object_msgs/ObjectArray | Detected dynamic obstacles positions. |
 | /path | nav_msgs/Path | A sequence of waypoints (x,y) in meters representing the calculated path to be followed. |
 
