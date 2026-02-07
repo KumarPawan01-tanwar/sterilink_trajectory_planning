@@ -16,7 +16,6 @@ To achieve that, the **Dynamic Window Approach (DWA)** algorithm is to be evalua
 
 ## ROS Parameters
 - `max_speed`: maximum allowed speed in m/s (default: 1.2).
-- `max_accel`: maximum acceleration in m/s² (default: 0.5).
 - `obstacle_safety_margin`: clearance from obstacles in m (default: 0.3).
 
 ## ROS Interfaces
@@ -30,7 +29,6 @@ To achieve that, the **Dynamic Window Approach (DWA)** algorithm is to be evalua
 | Output | Type | Description |
 |---|---|---|
 | /motion_command | ackermann_msgs/AckermannDriveStamped | Drive command for the robot. |
-| /live_location | nav_msgs/Odometry | Actual pose for remote display. |
 | /trajectory_status | sterilink_msgs/TrajectoryStatus | Local planning status with diagnostic codes and flags. |
 
 ### TrajectoryStatus Message
@@ -43,12 +41,14 @@ The TrajectoryStatus message is defined in [sterilink_msgs/msg/TrajectoryStatus.
 ### Status Codes
 | Code | Status | Description |
 |:-----:|:--------|:--------|
+| -1 | UNDEFINED | Default/uninitialized value. |
 | 0 | SUCCESS | Valid trajectory found and command published. |
-| 1 | NO_AVAILABLE_PATH | No usable global path available to follow. |
-| 2 | NO_FEASIBLE_TRAJECTORY | No feasible trajectory could be generated. |
-| 3 | OBSTACLE_BLOCKING | An obstacle blocks the path. |
-| 4 | LOW_CLEARANCE | Clearance below configured safety margin. |
-| 5 | UNKNOWN_ERROR | Unclassified failure. |
+| 1 | NO_ِAVAILABLE_ODOMETRY | Odometry/localization data unavailable. |
+| 2 | NO_AVAILABLE_PATH | No usable global path available to follow. |
+| 3 | NO_FEASIBLE_TRAJECTORY | No feasible trajectory could be generated. |
+| 4 | OBSTACLE_BLOCKING | An obstacle blocks the path. |
+| 5 | LOW_CLEARANCE | Clearance below configured safety margin. |
+| 6 | UNKNOWN_ERROR | Unclassified failure. |
 
 ### Prerequisites
 - ROS 2 (Humble or later)
