@@ -117,7 +117,7 @@ class TrajectoryPlanning(Node):
         status_msg = TrajectoryStatus()
         # Check for missing odometry
         if self.odometry is None:
-            status_msg.status = TrajectoryStatus.NO_ِAVAILABLE_ODOMETRY
+            status_msg.status = TrajectoryStatus.NO_AVAILABLE_ODOMETRY
             status_msg.message = "Waiting for localization odometry data"
             self.pub_trajectory_status.publish(status_msg)
             return

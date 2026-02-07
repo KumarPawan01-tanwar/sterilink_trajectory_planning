@@ -43,7 +43,7 @@ The TrajectoryStatus message is defined in [sterilink_msgs/msg/TrajectoryStatus.
 |:-----:|:--------|:--------|
 | -1 | UNDEFINED | Default/uninitialized value. |
 | 0 | SUCCESS | Valid trajectory found and command published. |
-| 1 | NO_ِAVAILABLE_ODOMETRY | Odometry/localization data unavailable. |
+| 1 | NO_AVAILABLE_ODOMETRY | Odometry/localization data unavailable. |
 | 2 | NO_AVAILABLE_PATH | No usable global path available to follow. |
 | 3 | NO_FEASIBLE_TRAJECTORY | No feasible trajectory could be generated. |
 | 4 | OBSTACLE_BLOCKING | An obstacle blocks the path. |
