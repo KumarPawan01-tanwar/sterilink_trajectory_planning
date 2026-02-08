@@ -72,8 +72,3 @@ Launch the trajectory planning node:
 ```bash
 ros2 run sterilink_trajectory_planning trajectory_planning_node
 ```
-
-Or include it in a launch file:
-```bash
-ros2 launch sterilink_trajectory_planning trajectory_planning.launch.py
-```
