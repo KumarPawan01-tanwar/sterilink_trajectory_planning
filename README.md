@@ -20,6 +20,10 @@ To achieve that, the **Dynamic Window Approach (DWA)** algorithm is to be evalua
 
 ## ROS Interfaces
 
+<p align="center">
+    <img src="trajectory_node_graph.png" width="500"> 
+</p>
+
 | Input | Type | Description |
 |---|---|---|
 | /odometry | nav_msgs/Odometry | Current estimated pose and velocity of the robot. |
@@ -61,8 +65,8 @@ The TrajectoryStatus message is defined in [sterilink_msgs/msg/TrajectoryStatus.
 
 ### Installation
 ```bash
-cd ~/ros2_ws/src
 # Navigate to the sterilink workspace
+cd ~/ros2_ws/src
 colcon build --packages-select sterilink_trajectory_planning
 source install/setup.bash
 ```
@@ -72,8 +76,3 @@ Launch the trajectory planning node:
 ```bash
 ros2 run sterilink_trajectory_planning trajectory_planning_node
 ```
-
-## RQT Node Graph
-<p align="center">
-    <img src="trajectory_node_graph.png" width="500"> 
-</p>

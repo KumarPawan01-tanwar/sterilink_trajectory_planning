@@ -9,6 +9,7 @@ from typing import Optional
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
+from rcl_interfaces.msg import SetParametersResult
 from ackermann_msgs.msg import AckermannDriveStamped
 from derived_object_msgs.msg import ObjectArray
 from nav_msgs.msg import Odometry, Path
@@ -37,12 +38,17 @@ class TrajectoryPlanning(Node):
         self.declare_parameter("obstacle_safety_margin", 0.3)
 
         # Cache parameter values
-        self.max_speed = (self.get_parameter("max_speed")
-                          .get_parameter_value().double_value)
+        self.max_speed = (
+            self.get_parameter("max_speed")
+            .get_parameter_value().double_value
+        )
         self.obstacle_safety_margin = (
             self.get_parameter("obstacle_safety_margin")
             .get_parameter_value().double_value
         )
+
+        # Allow runtime parameter updates
+        self.add_on_set_parameters_callback(self._on_parameter_update)
 
         # Internal state
         self.odometry: Optional[Odometry] = None
@@ -130,17 +136,8 @@ class TrajectoryPlanning(Node):
             return
 
         if self.lowest_clearance is None:
-            # example for now: simple forward drive command
-            drive_cmd = AckermannDriveStamped()
-            drive_cmd.header.stamp = self.get_clock().now().to_msg()
-            drive_cmd.drive.speed = self.max_speed / 2  # Half max speed
-            drive_cmd.drive.steering_angle = 0.0  # Straight ahead
-            self.pub_motion_command.publish(drive_cmd)
-            self.get_logger().info(
-                f"Publishing straight drive command with speed: {drive_cmd.drive.speed} m/s")
-
             status_msg.status = TrajectoryStatus.SUCCESS
-            status_msg.message = "Trajectory published | No Obstacle"
+            status_msg.message = "No Obstacles"
         elif self.lowest_clearance <= self.obstacle_safety_margin:
             status_msg.status = TrajectoryStatus.LOW_CLEARANCE
             status_msg.message = (
@@ -151,8 +148,18 @@ class TrajectoryPlanning(Node):
             status_msg.status = TrajectoryStatus.SUCCESS
             status_msg.message = "Trajectory published | Safe Clearance"
             status_msg.clearance = self.lowest_clearance
-        status_msg.speed_cmd = float(drive_cmd.drive.speed)
+
+        # example for now: simple forward drive command with half max speed
+        drive_cmd = AckermannDriveStamped()
+        drive_cmd.header.stamp = self.get_clock().now().to_msg()
+        drive_cmd.drive.speed = self.max_speed / 2
+        
+        # publish the drive command and trajectory status
+        self.pub_motion_command.publish(drive_cmd)
         self.pub_trajectory_status.publish(status_msg)
+
+        self.get_logger().info(
+            f"Publishing straight drive command with speed: {drive_cmd.drive.speed} m/s")
 
     def update_obstacles_clearance(self):
         """Update internal obstacle representation."""
@@ -177,9 +184,34 @@ class TrajectoryPlanning(Node):
             return
 
         # TODO: Implement trajectory planning logic
-        for pose in self.path.poses:
-            self.get_logger().info(
-                f"Path waypoint at {pose.pose.position.x}, {pose.pose.position.y}")
+        for index, pose in enumerate(self.path.poses):
+            if index % 10 == 0:
+                self.get_logger().debug(
+                    "Path waypoint at %s, %s",
+                    pose.pose.position.x,
+                    pose.pose.position.y,
+                )
+
+    def _on_parameter_update(self, params):
+        """Validate and apply parameter updates at runtime."""
+        next_max_speed = self.max_speed
+        next_margin = self.obstacle_safety_margin
+
+        for param in params:
+            if param.name == "max_speed":
+                next_max_speed = float(param.value)
+            elif param.name == "obstacle_safety_margin":
+                next_margin = float(param.value)
+
+        if next_max_speed <= 0.0 or next_margin < 0.0:
+            return SetParametersResult(
+                successful=False,
+                reason="max_speed must be > 0 and obstacle_safety_margin >= 0",
+            )
+
+        self.max_speed = next_max_speed
+        self.obstacle_safety_margin = next_margin
+        return SetParametersResult(successful=True)
 
 
 def main(args=None) -> None:
