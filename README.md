@@ -21,7 +21,7 @@ To achieve that, the **Dynamic Window Approach (DWA)** algorithm is to be evalua
 ## ROS Interfaces
 
 <p align="center">
-    <img src="trajectory_node_graph.png" width="500"> 
+    <img src="trajectory_node_graph.png" width="900"> 
 </p>
 
 | Input | Type | Description |
