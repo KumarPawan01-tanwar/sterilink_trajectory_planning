@@ -72,3 +72,8 @@ Launch the trajectory planning node:
 ```bash
 ros2 run sterilink_trajectory_planning trajectory_planning_node
 ```
+
+## RQT Node Graph
+<p align="center">
+    <img src="trajectory_node_graph.png" width="500"> 
+</p>
